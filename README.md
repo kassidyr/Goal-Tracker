@@ -1,1 +1,0 @@
-# virtual-practice-log
