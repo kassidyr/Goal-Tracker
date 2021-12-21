@@ -1,0 +1,22 @@
+  <div class="login-card">
+    <h2 class="page-title">Enter new Goal</h2>
+    <form class="form signup-form">
+      <div class="form-group">
+        <label for="newgoaltitle-signup" width="200">Enter Title for your goal:</label>
+        <input class="form-input" type="text" id="newgoal-signup" />
+      </div>
+      <div class="form-group">
+        <label for="goaltext-signup">Enter Message:</label>
+        <textarea class="form-input" type="text" width="100" height="60" id="message-signup" /></textarea>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Enter Goal!</button>
+      </div>
+    </form>
+  </div>
+</div>
+{{!-- displaying goals here --}}
+<script src="./js/login.js"></script>
+{{#each goals as |goal|}}
+{{> goal-details}}
+{{/each}}
