@@ -7,7 +7,7 @@ const withAuth = require('../utils/auth');
 // GET all goals for homepage
 router.get('/', async (req, res) => {
   try {
-    const dbGoalData = await Goal.findAll({
+    const dbGoalData = await Goals.findAll({
       include: [
         {
           model: Goals,
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
           attributes: [
             'hoursCompleted',
             // include the total log count for the post
-            [sequelize.literal('(SELECT COUNT(*) FROM log WHERE post.id = log.post_id)'), 'total_Hours']
+            // [sequelize.literal('(SELECT COUNT(*) FROM log WHERE post.id = log.post_id)'), 'total_Hours']
           ]
         },
       ],
@@ -66,5 +66,9 @@ router.get('/goals/:id', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+router.get('/login', (req, res) => {
+  res.render("login")
+})
 
 module.exports = router;

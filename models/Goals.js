@@ -16,7 +16,7 @@ Goals.init(
       allowNull: false,
     },
     hoursEstimate: {
-      type: DataTypes.Integer,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     user_id: {
