@@ -37,6 +37,7 @@ router.get('/', (req, res) => {
     });
 });
 
+
 // Get one goal
 router.get('/:id', (req, res) => {
     Goals.findOne({
@@ -94,66 +95,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// Create a log
-// PUT /api/goals/log
-// Place before /:id PUT route so that Express.js won't think "log" is a valid parameter for /:id
-// router.put('/log', (req, res) => {
-//     Log.create({
-//         hoursCompleted: req.body.hoursCompleted,
-//         user_id: req.body.user_id,
-//         goal_id: req.body.goal_id
-//       })
-//         .then(dbGoalData => res.json(dbGoalData))
-//         .catch(err => res.json(err));
-// });
-// router.put('/log', (req, res) => {
-//     // create the log
-//     Log.create({
-//         hoursCompleted: req.body.hoursCompleted,
-//         user_id: req.body.user_id,
-//         goals_id: req.body.goals_id
-//     }).then(() => {
-//         // then find the goal we just created a log for
-//         return Goals.findOne({
-//         where: {
-//             id: req.body.goals_id
-//         },
-//         attributes: [
-//             'id',
-//             'objective',
-//             'hoursEstimate',
-//             'created_at',
-//             // use raw MySQL aggregate function query to get a count of how many logs the goal has and return it under the name `logged_hours`
-//             [
-//             sequelize.literal('(SELECT COUNT(*) FROM log WHERE goals.id = log.goals_id)'),
-//             'logged_hours'
-//             ]
-//         ]
-//         })
-//         .then(dbGoalData => res.json(dbGoalData))
-//         .catch(err => {
-//         console.log(err);
-//         res.status(400).json(err);
-//         });
-//     });
-// });
-
-// get all logs
-// router.get('/log', (req, res) => {
-//     Log.findAll({
-//         attributes:
-//             [
-//                 'hoursCompleted',
-//                 'created_at'
-//             ],
-//         order: [['created_at', 'DESC']],
-//     })
-//     .then(dbGoalData => res.json(dbGoalData))
-//     .catch(err => {
-//         console.log(err);
-//         res.status(500).json(err);
-//     });
-// });
 
 // Update a goal
 router.put('/:id', (req, res) => {
@@ -180,6 +121,7 @@ router.put('/:id', (req, res) => {
             res.status(500).json(err);
         });
 });
+
 
 // Delete a goal
 router.delete('/:id', (req, res) => {
