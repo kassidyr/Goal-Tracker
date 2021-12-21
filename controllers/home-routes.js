@@ -1,36 +1,26 @@
 const router = require('express').Router();
-const { Goals, Log } = require('../models');
-const sequelize = require('../config/connection');
+const { Gallery, Painting } = require('../models');
 // Import the custom middleware
 const withAuth = require('../utils/auth');
 
-// GET all goals for homepage
+// GET all galleries for homepage
 router.get('/', async (req, res) => {
   try {
-    const dbGoalData = await Goal.findAll({
+    const dbGalleryData = await Gallery.findAll({
       include: [
         {
-          model: Goals,
-          attributes: [
-            'objective',
-            'hoursEstimate'
-          ],
-          model: Log,
-          attributes: [
-            'hoursCompleted',
-            // include the total log count for the post
-            [sequelize.literal('(SELECT COUNT(*) FROM log WHERE post.id = log.post_id)'), 'total_Hours']
-          ]
+          model: Painting,
+          attributes: ['filename', 'description'],
         },
       ],
     });
 
-    const userGoals = dbGoalData.map((goals) =>
-      goals.get({ plain: true })
+    const galleries = dbGalleryData.map((gallery) =>
+      gallery.get({ plain: true })
     );
 
     res.render('homepage', {
-      userGoals,
+      galleries,
       loggedIn: req.session.loggedIn,
     });
   } catch (err) {
@@ -39,32 +29,56 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET one goal
+// GET one gallery
 // Use the custom middleware before allowing the user to access the gallery
-router.get('/goals/:id', withAuth, async (req, res) => {
+router.get('/gallery/:id', withAuth, async (req, res) => {
   try {
-    const dbGoalData = await Goals.findByPk(req.params.id, {
+    const dbGalleryData = await Gallery.findByPk(req.params.id, {
       include: [
         {
-          model: Log,
-          order: [['created_at', 'DESC']],
+          model: Painting,
           attributes: [
             'id',
-            'hoursCompleted',
-            'created_at',
-            // include the total log count for the post
-            [sequelize.literal('(SELECT COUNT(*) FROM log WHERE post.id = log.post_id)'), 'total_Hours']
+            'title',
+            'artist',
+            'exhibition_date',
+            'filename',
+            'description',
           ],
         },
       ],
     });
 
-    const goal = dbGoalData.get({ plain: true });
-    res.render('goal', { goal, loggedIn: req.session.loggedIn });
+    const gallery = dbGalleryData.get({ plain: true });
+    res.render('gallery', { gallery, loggedIn: req.session.loggedIn });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
+});
+
+// GET one painting
+// Use the custom middleware before allowing the user to access the painting
+router.get('/painting/:id', withAuth, async (req, res) => {
+  try {
+    const dbPaintingData = await Painting.findByPk(req.params.id);
+
+    const painting = dbPaintingData.get({ plain: true });
+
+    res.render('painting', { painting, loggedIn: req.session.loggedIn });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get('/login', (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('login');
 });
 
 module.exports = router;
