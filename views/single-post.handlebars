@@ -1,12 +1,19 @@
-{{!-- <article class="post">
-  <div class="title">
-    <a href="{{post.post_url}}" target="_blank">{{post.title}}</a>
-    <span>({{post.post_url}})</span>
+{{>goal-info goal}}
+
+{{#if loggedIn}}
+<form class="comment-form">
+  <div>
+    <textarea name="log-body"></textarea>
   </div>
-  <div class="meta">
-    {{post.vote_count}} point(s) by {{post.user.username}} on
-    {{post.created_at}}
-    |
-    <a href="/post/{{post.id}}">{{post.comments.length}} comment(s)</a>
+
+  <div>
+    <button type="submit">add logged hours</button>
   </div>
-</article> --}}
+</form>
+{{/if}}
+
+{{> log goals.log}}
+
+{{#if loggedIn}}
+<script src="/javascript/log.js"></script
+{{/if}}

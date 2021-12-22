@@ -1,6 +1,7 @@
 const router = require('express').Router();
 // include the user model to bring in user_id
 const { Goals, User, Log } = require('../../models');
+const withAuth = require('../../utils/auth');
 // const sequelize = require('../../config/connection');
 // const req = require('express/lib/request');
 
@@ -86,7 +87,7 @@ router.post('/', (req, res) => {
     Goals.create({
         objective: req.body.objective,
         hoursEstimate: req.body.hoursEstimate,
-        user_id: req.body.user_id
+        user_id: req.session.user_id
     })
     .then(dbGoalData => res.json(dbGoalData))
     .catch(err => {
@@ -124,7 +125,7 @@ router.put('/:id', (req, res) => {
 
 
 // Delete a goal
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
     Goals.destroy({
         where: {
             id: req.params.id
