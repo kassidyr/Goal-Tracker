@@ -27,4 +27,4 @@ async function logFormHandler(event) {
       }
   }
   
-  document.querySelector('.comment-form').addEventListener('submit', logFormHandler);
+  document.querySelector('.log-form').addEventListener('submit', logFormHandler);

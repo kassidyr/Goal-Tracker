@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
         include: [
             {
                 model: Log,
-                attributes: ['id', 'hoursCompleted', 'goal_id', 'user_id', 'created_at'],
+                attributes: ['id', 'hoursCompleted', 'goals_id', 'user_id', 'created_at'],
                 include: {
                   model: User,
                   attributes: ['username']
@@ -56,7 +56,7 @@ router.get('/:id', (req, res) => {
         [
             {
                 model: Log,
-                attributes: ['id', 'hoursCompleted', 'goal_id', 'user_id', 'created_at'],
+                attributes: ['id', 'hoursCompleted', 'goals_id', 'user_id', 'created_at'],
                 include: {
                   model: User,
                   attributes: ['username']
