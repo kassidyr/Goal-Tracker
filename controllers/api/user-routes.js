@@ -44,54 +44,48 @@ router.post("/", (req, res) => {
     email: req.body.email,
     password: req.body.password,
   })
-    .then((dbUserData) => res.json(dbUserData))
+  .then(dbUserData => {
+    //initiate the creation of the session and then run the callback function once complete
+    req.session.save(() => {
+      req.session.user_id = dbUserData.id;
+      req.session.username = dbUserData.username;
+      req.session.loggedIn = true;
+  
+      res.json(dbUserData);
+    });
+  })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
-  //   try {
-  //     const dbUserData = await User.create({
-  //       username: req.body.username,
-  //       email: req.body.email,
-  //       password: req.body.password,
-  //     });
-
-  //     req.session.save(() => {
-  //       req.session.loggedIn = true;
-
-  //       res.status(200).json(dbUserData);
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500).json(err);
-  //   }
 });
 
-router.post('/login', async (req, res) => {
-    try {
-      const user = await User.findOne({
-        where: {
-          email: req.body.email,
-        },
-      });
-      if (!user) {
-        res.status(400).json({ message: 'No user account found!' });
+router.post('/login', (req, res) => {
+    User.findOne({
+      where: {
+        email: req.body.email
+      }
+    }).then(dbUserData => {
+      if (!dbUserData) {
+        res.status(400).json({ message: 'No user with that email address!' });
         return;
       }
-      const validPassword = user.checkPassword(req.body.password);
+  
+      const validPassword = dbUserData.checkPassword(req.body.password);
+  
       if (!validPassword) {
-        res.status(400).json({ message: 'No user account found!' });
+        res.status(400).json({ message: 'Incorrect password!' });
         return;
       }
+  
       req.session.save(() => {
-        req.session.userId = user.id;
-        req.session.username = user.username;
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
         req.session.loggedIn = true;
-        res.json({ user, message: 'You are now logged in!', req:req.session });
+    
+        res.json({ user: dbUserData, message: 'You are now logged in!' });
       });
-    } catch (err) {
-      res.status(400).json({ message: 'No user account found!' });
-    }
+    });
 });
 
 // PUT /api/users/1
@@ -135,44 +129,6 @@ router.delete("/:id", (req, res) => {
       res.status(500).json(err);
     });
 });
-
-// // Login
-// router.post('/login', async (req, res) => {
-//   try {
-//     const dbUserData = await User.findOne({
-//       where: {
-//         email: req.body.email,
-//       },
-//     });
-
-//     if (!dbUserData) {
-//       res
-//         .status(400)
-//         .json({ message: 'Incorrect email or password. Please try again!' });
-//       return;
-//     }
-
-//     const validPassword = await dbUserData.checkPassword(req.body.password);
-
-//     if (!validPassword) {
-//       res
-//         .status(400)
-//         .json({ message: 'Incorrect email or password. Please try again!' });
-//       return;
-//     }
-
-//     req.session.save(() => {
-//       req.session.loggedIn = true;
-
-//       res
-//         .status(200)
-//         .json({ user: dbUserData, message: 'You are now logged in!' });
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json(err);
-//   }
-// });
 
 // Logout
 router.post('/logout', (req, res) => {
