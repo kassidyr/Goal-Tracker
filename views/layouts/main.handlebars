@@ -15,9 +15,12 @@
         <a href="/">Goal Tracker</a>
       </h1>
         <nav>
-          {{!-- Since logout won't be an actual page that users visit, it is a button that is styled to look like a link --}}
-          <a href="/login">login</a>
+          {{#if loggedIn}}
           <button id="logout" class="btn-no-style">logout</button>
+          {{!-- Since logout won't be an actual page that users visit, it is a button that is styled to look like a link --}}
+          {{else}}
+          <a href="/login">login</a>
+          {{/if}}
         </nav>
     </header>
     <main>
@@ -27,7 +30,9 @@
       Thanks for visiting!
     </footer>
   </div>
+  {{#if loggedIn}}
   <script src="/javascript/logout.js"></script>
+  {{/if}}
 </body>
 
 </html>
