@@ -1,0 +1,12 @@
+<article class="post">
+  <div class="title">
+    <h1>{{objective}}</h1>
+    <span>{{hoursEstimate}} estimated hours to complete</span>
+  </div>
+  <div class="meta">
+    created on
+    {{format_date created_at}}
+    |
+    <a href="/goals/{{id}}">{{log.length}} 0 {{format_plural "hour" log.length}} completed</a>
+  </div>
+</article>

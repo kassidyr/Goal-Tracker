@@ -1,0 +1,19 @@
+{{>goal-info goal}}
+
+{{#if loggedIn}}
+<form class="comment-form">
+  <div>
+    <textarea name="log-body"></textarea>
+  </div>
+
+  <div>
+    <button type="submit">add logged hours</button>
+  </div>
+</form>
+{{/if}}
+
+{{> log goals.log}}
+
+{{#if loggedIn}}
+<script src="/javascript/log.js"></script
+{{/if}}
