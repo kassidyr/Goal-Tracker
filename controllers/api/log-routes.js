@@ -17,23 +17,29 @@ router.get('/', (req, res) => {
             }
         ]
     })
-    .then(dbLogData => res.json(dbLogData))
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    });
+        .then(dbLogData => res.json(dbLogData))
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 router.post('/', (req, res) => {
+    console.clear()
+    console.log("addHours")
+    console.log(req.session.user_id)
     Log.create({
         hoursCompleted: req.body.hoursCompleted,
-        user_id: req.body.user_id,
-        goals_id: req.body.goals_id
-      })
-        .then(dbLogData => res.json(dbLogData))
+        user_id: req.session.user_id,
+        goal_id: req.body.goal_id
+    })
+        .then(dbLogData => {
+            console.log(dbLogData)
+            res.json(dbLogData)
+        })
         .catch(err => {
-          console.log(err);
-          res.status(400).json(err);
+            console.log(err);
+            res.status(400).json(err);
         });
 });
 
@@ -43,17 +49,17 @@ router.delete('/:id', (req, res) => {
             id: req.params.id
         }
     })
-    .then(dbLogData => {
-        if (!dbLogData) {
-            res.status(404).json({ message: 'No log found with this id' });
-            return;
-        }
-        res.json(dbLogData);
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    });
+        .then(dbLogData => {
+            if (!dbLogData) {
+                res.status(404).json({ message: 'No log found with this id' });
+                return;
+            }
+            res.json(dbLogData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 module.exports = router;

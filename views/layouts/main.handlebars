@@ -16,6 +16,7 @@
       </h1>
         <nav>
           {{#if loggedIn}}
+          <a href="/dashboard">dashboard</a>
           <button id="logout" class="btn-no-style">logout</button>
           {{!-- Since logout won't be an actual page that users visit, it is a button that is styled to look like a link --}}
           {{else}}
@@ -27,9 +28,10 @@
       {{{ body }}}
     </main>
     <footer>
-      Thanks for visiting!
+      "One way to keep momentum going is to have constantly greater goals."  -Michael Korda
     </footer>
   </div>
+
   {{#if loggedIn}}
   <script src="/javascript/logout.js"></script>
   {{/if}}

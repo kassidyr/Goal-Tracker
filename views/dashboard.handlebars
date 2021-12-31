@@ -1,0 +1,31 @@
+<section>
+  <h2>Create New Goal</h2>
+
+  <form class="new-goal-form">
+    <div>
+      <label for="goal-title">Title</label>
+      <input type="text" id="goal-title" name="goal-title" />
+    </div>
+    <div>
+      <label for="estimatedHours">Estimated Hours to Complete</label>
+      <input id="estimatedHours" name="estimatedHours" />
+    </div>
+    <button type="submit" class="btn">Create</button>
+  </form>
+</section>
+
+{{#if goals.length}}
+<section>
+  <h2>Your Goals</h2>
+  <ol>
+    {{#each goals as |goal|}}
+    <li>
+      {{> goal-info goal}}
+      <a href="/dashboard/edit/{{goal.id}}" class="edit-link">Edit goal</a>
+    </li>
+    {{/each}}
+  </ol>
+</section>
+{{/if}}
+
+<script src="/javascript/add-goal.js"></script>
